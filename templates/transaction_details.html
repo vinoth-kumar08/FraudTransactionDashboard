@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}
+Transaction Details
+{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">Transaction Details</h2>
+
+<div class="card shadow">
+
+<div class="card-body">
+
+<table class="table">
+
+<tr>
+
+<th>Customer Name</th>
+
+<td>{{ transaction.customer_name }}</td>
+
+</tr>
+
+<tr>
+
+<th>Account Number</th>
+
+<td>{{ transaction.account_number }}</td>
+
+</tr>
+
+<tr>
+
+<th>Amount</th>
+
+<td>₹ {{ transaction.amount }}</td>
+
+</tr>
+
+<tr>
+
+<th>Transaction Type</th>
+
+<td>{{ transaction.transaction_type }}</td>
+
+</tr>
+
+<tr>
+
+<th>Location</th>
+
+<td>{{ transaction.location }}</td>
+
+</tr>
+
+<tr>
+
+<th>Risk</th>
+
+<td>
+
+{% if transaction.risk == "High" %}
+
+<span class="badge bg-danger">
+
+High
+
+</span>
+
+{% elif transaction.risk == "Medium" %}
+
+<span class="badge bg-warning text-dark">
+
+Medium
+
+</span>
+
+{% else %}
+
+<span class="badge bg-success">
+
+Safe
+
+</span>
+
+{% endif %}
+
+</td>
+
+</tr>
+
+</table>
+
+<a href="/dashboard"
+class="btn btn-secondary">
+
+Back to Dashboard
+
+</a>
+
+</div>
+
+</div>
+
+{% endblock %}

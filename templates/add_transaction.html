@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Transaction
+{% endblock %}
+
+{% block content %}
+
+<h2 class="mb-4">Add New Transaction</h2>
+
+<div class="card shadow p-4">
+
+<form method="POST">
+
+    <div class="mb-3">
+        <label class="form-label">Customer Name</label>
+        <input
+            type="text"
+            name="customer_name"
+            class="form-control"
+            placeholder="Enter customer name"
+            required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Account Number</label>
+        <input
+            type="text"
+            name="account_number"
+            class="form-control"
+            placeholder="Enter account number"
+            required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Transaction Amount (₹)</label>
+        <input
+            type="number"
+            name="amount"
+            class="form-control"
+            placeholder="Enter amount"
+            required>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Transaction Type</label>
+
+        <select
+            name="transaction_type"
+            class="form-select">
+
+            <option>UPI</option>
+            <option>NEFT</option>
+            <option>IMPS</option>
+            <option>RTGS</option>
+            <option>Debit Card</option>
+
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Location</label>
+        <input
+            type="text"
+            name="location"
+            class="form-control"
+            placeholder="Enter city"
+            required>
+    </div>
+
+    <button
+        class="btn btn-success">
+
+        Save Transaction
+
+    </button>
+
+    <a href="/dashboard"
+       class="btn btn-secondary">
+
+        Cancel
+
+    </a>
+
+</form>
+
+</div>
+
+{% endblock %}
