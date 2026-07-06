@@ -132,6 +132,7 @@ Dashboard
             <th>Customer</th>
             <th>Account</th>
             <th>Amount</th>
+            <th>Fraud Score</th>
             <th>Type</th>
             <th>Location</th>
             <th>Risk</th>
@@ -156,6 +157,26 @@ Dashboard
             <td>{{ transaction.account_number }}</td>
 
             <td>₹ {{ transaction.amount }}</td>
+            <td>
+
+    {% if transaction.fraud_score >= 60 %}
+        <span class="badge bg-danger">
+            {{ transaction.fraud_score }}/100
+        </span>
+
+    {% elif transaction.fraud_score >= 30 %}
+        <span class="badge bg-warning text-dark">
+            {{ transaction.fraud_score }}/100
+        </span>
+
+    {% else %}
+        <span class="badge bg-success">
+            {{ transaction.fraud_score }}/100
+        </span>
+
+    {% endif %}
+
+</td>
 
             <td>{{ transaction.transaction_type }}</td>
 

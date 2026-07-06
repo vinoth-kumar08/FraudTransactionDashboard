@@ -22,6 +22,7 @@ class Transaction(db.Model):
     amount = db.Column(db.Float, nullable=False)
     transaction_type = db.Column(db.String(30), nullable=False)
     location = db.Column(db.String(100), nullable=False)
+    fraud_score = db.Column(db.Integer, nullable=False)
     risk = db.Column(db.String(20), nullable=False)
 
 
@@ -32,30 +33,31 @@ def calculate_risk(amount, transaction_type, location):
 
     score = 0
 
-    # Rule 1 - Amount
+    # Amount
     if amount >= 100000:
         score += 50
     elif amount >= 50000:
         score += 30
 
-    # Rule 2 - Transaction Type
+    # Transaction Type
     if transaction_type == "RTGS":
         score += 20
     elif transaction_type == "IMPS":
         score += 10
 
-    # Rule 3 - Location
+    # Location
     if location.lower() != "bangalore":
         score += 20
 
-    # Final Risk
+    # Decide Risk
     if score >= 60:
-        return "High"
+        risk = "High"
     elif score >= 30:
-        return "Medium"
+        risk = "Medium"
     else:
-        return "Safe"
+        risk = "Safe"
 
+    return score, risk
 # -------------------------
 # Routes
 # -------------------------
@@ -112,7 +114,7 @@ def add_transaction():
 
         location = request.form["location"]
 
-        risk = calculate_risk(amount, transaction_type, location)
+        fraud_score, risk = calculate_risk(amount, transaction_type, location)
 
         new_transaction = Transaction(
             customer_name=customer_name,
@@ -120,6 +122,7 @@ def add_transaction():
             amount=amount,
             transaction_type=transaction_type,
             location=location,
+            fraud_score=fraud_score,
             risk=risk
         )
 
