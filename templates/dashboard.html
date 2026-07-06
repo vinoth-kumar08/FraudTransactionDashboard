@@ -9,7 +9,9 @@ Dashboard
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h2>🏦 Fraud Investigation Dashboard</h2>
-        <p class="text-muted">Monitor and investigate suspicious banking transactions.</p>
+        <p class="text-muted">
+            Monitor and investigate suspicious banking transactions.
+        </p>
     </div>
 
     <a href="/add" class="btn btn-primary">
@@ -20,34 +22,24 @@ Dashboard
 <form method="GET" action="/dashboard" class="row mb-4">
 
     <div class="col-md-8">
-
         <input
             type="text"
             name="search"
             class="form-control"
             placeholder="Search by Customer Name or Account Number"
             value="{{ search if search else '' }}">
-
     </div>
 
     <div class="col-md-2">
-
         <button class="btn btn-primary w-100">
-
             Search
-
         </button>
-
     </div>
 
     <div class="col-md-2">
-
         <a href="/dashboard" class="btn btn-secondary w-100">
-
             Clear
-
         </a>
-
     </div>
 
 </form>
@@ -55,67 +47,39 @@ Dashboard
 <div class="row g-3">
 
     <div class="col-md-3">
-
         <div class="card shadow text-center border-0">
-
             <div class="card-body">
-
                 <h6 class="text-muted">Total Transactions</h6>
-
                 <h2>{{ total }}</h2>
-
             </div>
-
         </div>
-
     </div>
 
     <div class="col-md-3">
-
         <div class="card shadow text-center border-0">
-
             <div class="card-body">
-
                 <h6 class="text-success">Safe</h6>
-
                 <h2>{{ safe }}</h2>
-
             </div>
-
         </div>
-
     </div>
 
     <div class="col-md-3">
-
         <div class="card shadow text-center border-0">
-
             <div class="card-body">
-
                 <h6 class="text-warning">Medium Risk</h6>
-
                 <h2>{{ medium }}</h2>
-
             </div>
-
         </div>
-
     </div>
 
     <div class="col-md-3">
-
         <div class="card shadow text-center border-0">
-
             <div class="card-body">
-
                 <h6 class="text-danger">High Risk</h6>
-
                 <h2>{{ high }}</h2>
-
             </div>
-
         </div>
-
     </div>
 
 </div>
@@ -127,7 +91,6 @@ Dashboard
     <thead class="table-dark">
 
         <tr>
-
             <th>ID</th>
             <th>Customer</th>
             <th>Account</th>
@@ -137,7 +100,6 @@ Dashboard
             <th>Location</th>
             <th>Risk</th>
             <th>Action</th>
-
         </tr>
 
     </thead>
@@ -157,26 +119,27 @@ Dashboard
             <td>{{ transaction.account_number }}</td>
 
             <td>₹ {{ transaction.amount }}</td>
+
             <td>
 
-    {% if transaction.fraud_score >= 60 %}
-        <span class="badge bg-danger">
-            {{ transaction.fraud_score }}/100
-        </span>
+                {% if transaction.fraud_score >= 60 %}
+                    <span class="badge bg-danger">
+                        {{ transaction.fraud_score }}/100
+                    </span>
 
-    {% elif transaction.fraud_score >= 30 %}
-        <span class="badge bg-warning text-dark">
-            {{ transaction.fraud_score }}/100
-        </span>
+                {% elif transaction.fraud_score >= 30 %}
+                    <span class="badge bg-warning text-dark">
+                        {{ transaction.fraud_score }}/100
+                    </span>
 
-    {% else %}
-        <span class="badge bg-success">
-            {{ transaction.fraud_score }}/100
-        </span>
+                {% else %}
+                    <span class="badge bg-success">
+                        {{ transaction.fraud_score }}/100
+                    </span>
 
-    {% endif %}
+                {% endif %}
 
-</td>
+            </td>
 
             <td>{{ transaction.transaction_type }}</td>
 
@@ -185,28 +148,24 @@ Dashboard
             <td>
 
                 {% if transaction.risk == "High" %}
-
                     <span class="badge bg-danger">High</span>
 
                 {% elif transaction.risk == "Medium" %}
-
                     <span class="badge bg-warning text-dark">Medium</span>
 
                 {% else %}
-
                     <span class="badge bg-success">Safe</span>
 
                 {% endif %}
 
             </td>
+
             <td>
 
-            <a href="/transaction/{{ transaction.id }}"
-            class="btn btn-sm btn-primary">
-
-                View
-
-            </a>
+                <a href="/transaction/{{ transaction.id }}"
+                   class="btn btn-sm btn-primary">
+                    View
+                </a>
 
             </td>
 
@@ -218,7 +177,7 @@ Dashboard
 
         <tr>
 
-            <td colspan="7" class="text-center">
+            <td colspan="9" class="text-center">
 
                 No transactions found.
 
@@ -231,5 +190,67 @@ Dashboard
     </tbody>
 
 </table>
+
+<hr class="my-5">
+
+<h3 class="mb-3">Fraud Analytics</h3>
+
+<div class="card shadow p-4">
+
+    <canvas id="fraudChart"></canvas>
+
+</div>
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const ctx = document.getElementById("fraudChart");
+
+    new Chart(ctx, {
+
+        type: "pie",
+
+        data: {
+
+            labels: ["Safe", "Medium", "High"],
+
+            datasets: [{
+
+                data: [{{ safe }}, {{ medium }}, {{ high }}],
+
+                backgroundColor: [
+                    "#28a745",
+                    "#ffc107",
+                    "#dc3545"
+                ],
+
+                borderWidth: 1
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            plugins: {
+
+                legend: {
+
+                    position: "bottom"
+
+                }
+
+            }
+
+        }
+
+    });
+
+});
+
+</script>
 
 {% endblock %}

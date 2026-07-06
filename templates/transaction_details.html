@@ -10,96 +10,131 @@ Transaction Details
 
 <div class="card shadow">
 
-<div class="card-body">
+    <div class="card-body">
 
-<table class="table">
+        <table class="table">
 
-<tr>
+            <tr>
+                <th>Customer Name</th>
+                <td>{{ transaction.customer_name }}</td>
+            </tr>
 
-<th>Customer Name</th>
+            <tr>
+                <th>Account Number</th>
+                <td>{{ transaction.account_number }}</td>
+            </tr>
 
-<td>{{ transaction.customer_name }}</td>
+            <tr>
+                <th>Amount</th>
+                <td>₹ {{ transaction.amount }}</td>
+            </tr>
 
-</tr>
+            <tr>
+                <th>Transaction Type</th>
+                <td>{{ transaction.transaction_type }}</td>
+            </tr>
 
-<tr>
+            <tr>
+                <th>Location</th>
+                <td>{{ transaction.location }}</td>
+            </tr>
 
-<th>Account Number</th>
+            <tr>
+                <th>Fraud Score</th>
+                <td>{{ transaction.fraud_score }}/100</td>
+            </tr>
 
-<td>{{ transaction.account_number }}</td>
+            <tr>
+                <th>Risk</th>
+                <td>
 
-</tr>
+                    {% if transaction.risk == "High" %}
+                        <span class="badge bg-danger">High</span>
 
-<tr>
+                    {% elif transaction.risk == "Medium" %}
+                        <span class="badge bg-warning text-dark">Medium</span>
 
-<th>Amount</th>
+                    {% else %}
+                        <span class="badge bg-success">Safe</span>
 
-<td>₹ {{ transaction.amount }}</td>
+                    {% endif %}
 
-</tr>
+                </td>
+            </tr>
 
-<tr>
+        </table>
 
-<th>Transaction Type</th>
+        <hr>
 
-<td>{{ transaction.transaction_type }}</td>
+        <form method="POST">
 
-</tr>
+            <div class="mb-3">
 
-<tr>
+                <label class="form-label">
+                    Investigation Status
+                </label>
 
-<th>Location</th>
+                <select
+                    name="status"
+                    class="form-select">
 
-<td>{{ transaction.location }}</td>
+                    <option value="Pending"
+                    {% if transaction.status=="Pending" %}selected{% endif %}>
+                    Pending
+                    </option>
 
-</tr>
+                    <option value="Under Investigation"
+                    {% if transaction.status=="Under Investigation" %}selected{% endif %}>
+                    Under Investigation
+                    </option>
 
-<tr>
+                    <option value="Cleared"
+                    {% if transaction.status=="Cleared" %}selected{% endif %}>
+                    Cleared
+                    </option>
 
-<th>Risk</th>
+                    <option value="Fraud Confirmed"
+                    {% if transaction.status=="Fraud Confirmed" %}selected{% endif %}>
+                    Fraud Confirmed
+                    </option>
 
-<td>
+                </select>
 
-{% if transaction.risk == "High" %}
+            </div>
 
-<span class="badge bg-danger">
+            <div class="mb-3">
 
-High
+                <label class="form-label">
+                    Investigator Notes
+                </label>
 
-</span>
+                <textarea
+                    name="notes"
+                    class="form-control"
+                    rows="5"
+                    placeholder="Enter investigation notes...">{{ transaction.notes if transaction.notes else "" }}</textarea>
 
-{% elif transaction.risk == "Medium" %}
+            </div>
 
-<span class="badge bg-warning text-dark">
+            <button
+                type="submit"
+                class="btn btn-success">
 
-Medium
+                Save Investigation
 
-</span>
+            </button>
 
-{% else %}
+            <a href="/download/{{ transaction.id }}" class="btn btn-danger">
+                📄 Download Report
+            </a>
 
-<span class="badge bg-success">
+            <a href="/dashboard" class="btn btn-secondary">
+                Back
+            </a>
 
-Safe
+        </form>
 
-</span>
-
-{% endif %}
-
-</td>
-
-</tr>
-
-</table>
-
-<a href="/dashboard"
-class="btn btn-secondary">
-
-Back to Dashboard
-
-</a>
-
-</div>
+    </div>
 
 </div>
 
